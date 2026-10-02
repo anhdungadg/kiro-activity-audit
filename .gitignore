@@ -1,0 +1,11 @@
+dist/
+build/
+*.egg-info/
+__pycache__/
+.venv/
+# không bao giờ commit dữ liệu audit
+kiro-audit-*/
+data/
+*.json.gz
+# từ khoá thật của tổ chức đã audit — chỉ để local, không commit
+tests/banned-terms.local.txt

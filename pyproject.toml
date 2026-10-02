@@ -1,0 +1,26 @@
+[project]
+name = "kiro-audit-mcp"
+version = "0.1.0"
+description = "Read-only MCP server to audit Kiro Enterprise activity logs (cost, quota blocking, leaked credentials, purpose of use)"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = ["mcp>=1.20,<2"]
+
+[project.scripts]
+kiro-audit-mcp = "kiro_audit.server:main"
+
+[build-system]
+requires = ["hatchling>=1.24"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/kiro_audit"]
+
+# Một nguồn duy nhất: script/template/reference nằm trong skill, được đóng gói kèm MCP server.
+[tool.hatch.build.targets.wheel.force-include]
+"skills/kiro-activity-audit/scripts" = "kiro_audit/scripts"
+"skills/kiro-activity-audit/templates" = "kiro_audit/templates"
+"skills/kiro-activity-audit/references" = "kiro_audit/references"
+
+[tool.hatch.build.targets.sdist]
+include = ["src/", "skills/", "README.md", "pyproject.toml"]

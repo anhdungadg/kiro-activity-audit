@@ -1,0 +1,22 @@
+{
+  "mcpServers": {
+    "kiro-audit": {
+      "command": "uvx",
+      "args": [
+        "--from",
+        "git+http://localhost:13000/gitea_admin/kiro-activity-audit.git",
+        "kiro-audit-mcp"
+      ],
+      "env": {
+        "KIRO_AUDIT_TZ": "7"
+      },
+      "disabled": false,
+      "autoApprove": [
+        "audit_check_access",
+        "audit_job_status",
+        "audit_secret_summary",
+        "audit_purpose_summary"
+      ]
+    }
+  }
+}
