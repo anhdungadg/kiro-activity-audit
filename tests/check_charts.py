@@ -57,6 +57,6 @@ if __name__ == "__main__":
     bad = 0
     for p in sys.argv[1:]:
         e = check(p)
-        print(("✓ " if not e else "✗ ") + p + ("" if not e else " — " + "; ".join(e)))
+        print(("✓ " if not e else "✗ ") + p + ("" if not e else " - " + "; ".join(e)))
         bad += bool(e)
     sys.exit(1 if bad else 0)

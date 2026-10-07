@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Sinh reports/bao-cao-chi-phi-va-muc-dich-su-dung.html TỪ bản .md cùng tên.
 
-Trước đây .md và .html là hai tài liệu viết tay song song, phải sửa tay cả hai mỗi kỳ —
+Trước đây .md và .html là hai tài liệu viết tay song song, phải sửa tay cả hai mỗi kỳ -
 nguồn gây lệch số liệu giữa hai bản. Giờ markdown là nguồn duy nhất; HTML được sinh ra,
 kèm 3 biểu đồ lấy số trực tiếp từ data/csv-metrics.json.
 
@@ -157,14 +157,14 @@ def rows(metrics, limit=24):
 
 
 CHART_HTML = """
-<h2><span class="pill">BĐ</span><span>Biểu đồ — {n} nhân viên dùng nhiều nhất</span></h2>
+<h2><span class="pill">BĐ</span><span>Biểu đồ - {n} nhân viên dùng nhiều nhất</span></h2>
 <div class="g2">
-  <div class="chart-wrap"><div class="cap">Credit thực dùng {d} ngày — đỏ: đã chạm hạn mức 5.000</div>
+  <div class="chart-wrap"><div class="cap">Credit thực dùng {d} ngày - đỏ: đã chạm hạn mức 5.000</div>
     <div class="cbox sm"><canvas id="c1"></canvas></div></div>
   <div class="chart-wrap"><div class="cap">Dự phóng tháng so với hạn mức 5.000 credit</div>
     <div class="cbox sm"><canvas id="c2"></canvas></div></div>
 </div>
-<div class="chart-wrap"><div class="cap">Credit/tin nhắn và tỷ lệ dùng Opus — cơ sở đề nghị đổi model
+<div class="chart-wrap"><div class="cap">Credit/tin nhắn và tỷ lệ dùng Opus - cơ sở đề nghị đổi model
   (đỏ: trên 1,0 credit/tin nhắn)</div><div class="cbox"><canvas id="c3"></canvas></div></div>
 """
 
@@ -190,8 +190,8 @@ mk('c2',{type:'bar',data:{labels:ROWS.map(r=>r.e),datasets:[{data:ROWS.map(r=>r.
   ...col(r=>r.pct>=100?F.red:r.pct>=75?F.amber:F.green)}]},
   options:{indexAxis:'y',plugins:{legend:{display:false},tooltip:{callbacks:{
     label:c=>` ${c.parsed.x.toLocaleString('vi-VN')} credit/tháng`,
-    afterLabel:c=>{const p=ROWS[c.dataIndex].pct;return `${p.toFixed(0)}% hạn mức — `+(p>=100?'sẽ bị chặn':p>=75?'at-risk':'an toàn');}}}},
-  scales:{x:{...G,beginAtZero:true,title:T('CREDIT/THÁNG NGOẠI SUY — hạn mức 5.000'),
+    afterLabel:c=>{const p=ROWS[c.dataIndex].pct;return `${p.toFixed(0)}% hạn mức - `+(p>=100?'sẽ bị chặn':p>=75?'at-risk':'an toàn');}}}},
+  scales:{x:{...G,beginAtZero:true,title:T('CREDIT/THÁNG NGOẠI SUY - hạn mức 5.000'),
     ticks:{callback:v=>v.toLocaleString('vi-VN')}},y:NG}}});
 mk('c3',{type:'bar',data:{labels:ROWS.map(r=>r.e),datasets:[
   {label:'Credit / tin nhắn',data:ROWS.map(r=>+(r.cr/r.msg).toFixed(3)),...col(r=>r.cr/r.msg>1?F.red:F.amber),yAxisID:'y',order:2},
@@ -246,7 +246,7 @@ def build(MD, OUT, CSS, METRICS, dry=False):
 </div>
 {body}
 </div>
-<!-- sinh tự động bởi scripts/build-approval-html.py — KHÔNG sửa tay, sửa file .md -->
+<!-- sinh tự động bởi scripts/build-approval-html.py - KHÔNG sửa tay, sửa file .md -->
 <script>{js}</script>
 </body>
 </html>

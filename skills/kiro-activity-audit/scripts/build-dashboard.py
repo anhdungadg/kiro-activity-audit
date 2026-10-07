@@ -36,7 +36,7 @@ def load(d: str) -> dict:
 # tài liệu chính thức tiếng Việt nên phải đổi sang 1.234,56. Chỉ áp dụng cho phần
 # tài liệu, KHÔNG áp dụng cho khối <script> (JSON/JS bắt buộc dùng dấu chấm thập phân).
 _NUM_RE = re.compile(r"\d{1,3}(?:,\d{3})+(?:\.\d+)?|\d+\.\d+")
-# Heading chứa SỐ MỤC (2.1, 2.6) — không phải số thập phân, tuyệt đối không đổi dấu.
+# Heading chứa SỐ MỤC (2.1, 2.6) - không phải số thập phân, tuyệt đối không đổi dấu.
 _HEAD_RE = re.compile(r"<h[1-6][^>]*>.*?</h[1-6]>", re.S)
 
 
@@ -329,11 +329,11 @@ def dash_html(D: dict, X: dict) -> str:
     return f"""<!doctype html>
 <html lang="vi"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Kiro Activity Audit — {X['customer']} — account {X['account']}</title>
+<title>Kiro Activity Audit - {X['customer']} - account {X['account']}</title>
 <style>{DARK_CSS}</style></head><body><div class="wrap">
 
 <header>
-<h1>KIRO ENTERPRISE ACTIVITY AUDIT — {X['customer'].upper()}</h1>
+<h1>KIRO ENTERPRISE ACTIVITY AUDIT - {X['customer'].upper()}</h1>
 <div class="meta">
 account <b>{X['account']}</b> · bucket <b>s3://{X['bucket']}</b><br>
 profile Kiro <b>{(M['profileIds'] or ['(không có)'])[0]}</b><br>
@@ -345,7 +345,7 @@ mọi giờ hiển thị <b>GMT+{X['tz']:g}</b>
 </div>
 </header>
 
-<div id="nochart">Không tải được Chart.js từ CDN — các biểu đồ bên dưới trống.
+<div id="nochart">Không tải được Chart.js từ CDN - các biểu đồ bên dưới trống.
 Toàn bộ số liệu vẫn có trong các bảng.</div>
 
 <div class="kpis">
@@ -374,9 +374,9 @@ Toàn bộ số liệu vẫn có trong các bảng.</div>
 </div>
 
 <div class="callout bad">
-<h4>Phát hiện chính — chi phí bị đẩy lên bởi lựa chọn model, không bởi khối lượng công việc</h4>
+<h4>Phát hiện chính - chi phí bị đẩy lên bởi lựa chọn model, không bởi khối lượng công việc</h4>
 <p>Nhóm Opus chiếm <b>{c_['opusMessages']/MD['totalMessages']*100:.2f}%</b> số message
-({c_['opusMessages']:,}) nhưng đốt <b>{c_['opusCredits']:,}</b> credit —
+({c_['opusMessages']:,}) nhưng đốt <b>{c_['opusCredits']:,}</b> credit -
 <b>{c_['opusCreditPerMsg']:.4f}</b> credit/message.
 <code>auto</code> chiếm {mbm.get('auto',0)/MD['totalMessages']*100:.2f}% message
 với chỉ <b>{c_['autoCreditPerMsg']:.4f}</b> credit/message.</p>
@@ -394,7 +394,7 @@ Chuyển 25% message Opus sang <code>auto</code> tiết kiệm
   + f" → <b>{'KHỚP TOÀN BỘ' if X['cross'].get('allMatch') else 'CÓ CHỈ SỐ LỆCH'}</b>.</p>")
  if X['cross'] else
  "<p class='dim'>Chưa có nguồn đối chiếu độc lập. Kiểm tra prefix <code>reports/</code> "
- "trong bucket — nhiều tổ chức tự lập báo cáo Kiro và để ở đó; đối chiếu được là bằng chứng "
+ "trong bucket - nhiều tổ chức tự lập báo cáo Kiro và để ở đó; đối chiếu được là bằng chứng "
  "mạnh nhất cho độ tin cậy của pipeline. Chạy <code>scenarios.py --crosscheck</code> "
  "để đưa vào đây.</p>"}
 </div>
@@ -408,20 +408,20 @@ GMT+{X['tz']:g} ngày đó → {int(X['tz']):02d}:00 hôm sau. {rhythm}</p>
 
 <h2>Phân bổ theo user</h2>
 <div class="grid">
-<div class="card"><h3>Top 20 user theo credit — tháng {basis}</h3>
+<div class="card"><h3>Top 20 user theo credit - tháng {basis}</h3>
 <p class="note">Số thật, không ngoại suy</p>
 <div class="cw"><canvas id="c2"></canvas></div></div>
-<div class="card"><h3>% hạn mức đã dùng — tháng {basis}</h3>
+<div class="card"><h3>% hạn mức đã dùng - tháng {basis}</h3>
 <p class="note">Vạch 75% = ngưỡng at-risk · vạch 100% = bị chặn</p>
 <div class="cw"><canvas id="c3"></canvas></div></div>
 <div class="card"><h3>Phân bổ tier</h3><p class="note">74 subscription đang hoạt động</p>
 <div class="cw"><canvas id="c4"></canvas></div></div>
-<div class="card"><h3>Tốc độ đốt credit — credit/ngày-active</h3>
+<div class="card"><h3>Tốc độ đốt credit - credit/ngày-active</h3>
 <p class="note">Top 12 lượt user-tháng</p>
 <div class="cw"><canvas id="c5"></canvas></div></div>
 </div>
 
-<h2>Model — nguồn gốc chi phí</h2>
+<h2>Model - nguồn gốc chi phí</h2>
 <div class="grid">
 <div class="card"><h3>Message theo model (đếm trực tiếp)</h3>
 <p class="note">Top 10 · tổng {MD['totalMessages']:,} message / {len(mods)} model</p>
@@ -429,7 +429,7 @@ GMT+{X['tz']:g} ngày đó → {int(X['tz']):02d}:00 hôm sau. {rhythm}</p>
 <div class="card"><h3>Credit suy ra theo model</h3>
 <p class="note">= số message × hệ số NNLS · R²={MD['nnls']['r2']:.4f}</p>
 <div class="cw"><canvas id="c7"></canvas></div></div>
-<div class="card full"><h3>Credit mỗi message theo model — ước lượng NNLS</h3>
+<div class="card full"><h3>Credit mỗi message theo model - ước lượng NNLS</h3>
 <p class="note">AWS không công bố hệ số model. Đây là ước lượng thống kê từ
 {MD['nnls']['rowsUsed']}/{MD['nnls']['rowsUsed']+MD['nnls']['rowsDropped']} dòng user-ngày,
 KHÔNG phải bảng giá công bố.</p>
@@ -439,7 +439,7 @@ KHÔNG phải bảng giá công bố.</p>
 <div class="callout">
 <h4>Giới hạn của ước lượng NNLS</h4>
 <ul>
-<li><code>gpt_5.6_luna</code> ra hệ số <b>0,0000</b> dù có {mbm.get('gpt_5.6_luna',0):,} message —
+<li><code>gpt_5.6_luna</code> ra hệ số <b>0,0000</b> dù có {mbm.get('gpt_5.6_luna',0):,} message -
 <b>không đáng tin</b>, khả năng do đa cộng tuyến. Không kết luận model này miễn phí.</li>
 <li>R² = {MD['nnls']['r2']:.4f} → {(1-MD['nnls']['r2'])*100:.1f}% biến thiên credit không giải thích
 được bằng model mix (độ phức tạp prompt, spec task, agentic loop).</li>
@@ -449,10 +449,10 @@ KHÔNG phải bảng giá công bố.</p>
 
 <h2>User bị chặn vì hết credit (right-censored)</h2>
 <div class="callout bad">
-<h4>Hệ quả phương pháp — không được bỏ qua</h4>
+<h4>Hệ quả phương pháp - không được bỏ qua</h4>
 <p><code>Overage_Enabled = false</code> trên toàn bộ {sum(td.values())} user → hết credit là
 <b>bị khoá</b>, không phát sinh phí. Rủi ro ở đây là <b>gián đoạn công việc</b>, không phải chi phí.</p>
-<p>Số liệu của {len(cens)} lượt dưới đây bị hạn mức <b>cắt ngang</b> — nhu cầu thật cao hơn con số
+<p>Số liệu của {len(cens)} lượt dưới đây bị hạn mức <b>cắt ngang</b> - nhu cầu thật cao hơn con số
 quan sát được. <b>Không hạ tier</b> cho nhóm này, và không coi số của họ là mức dùng thật.</p>
 </div>
 <div class="card full"><table>
@@ -462,16 +462,16 @@ quan sát được. <b>Không hạ tier</b> cho nhóm này, và không coi số 
 
 <h2>Ba phương án giảm chi phí</h2>
 <div class="grid">
-<div class="card"><h3>Phương án A — thu hồi seat</h3>
+<div class="card"><h3>Phương án A - thu hồi seat</h3>
 <p class="note">$/tháng tiết kiệm theo ngưỡng mức dùng tháng {basis}</p>
 <div class="cw"><canvas id="c9"></canvas></div></div>
-<div class="card"><h3>Phương án C — đổi model sang auto / sonnet_5</h3>
+<div class="card"><h3>Phương án C - đổi model sang auto / sonnet_5</h3>
 <p class="note">Credit tiết kiệm mỗi tháng cỡ tháng {basis}</p>
 <div class="cw"><canvas id="c10"></canvas></div></div>
 </div>
 
 <div class="callout ok">
-<h4>Phương án B — right-size an toàn</h4>
+<h4>Phương án B - right-size an toàn</h4>
 <p>Right-size máy móc: <b>${S['optionB_rightSize']['naiveMonthlyUsd']:,}</b>/tháng.
 Right-size <b>an toàn</b> (giữ nguyên tier cho {len(S['optionB_rightSize']['censoredUsersKept'])}
 user bị chặn{', và nâng tier cho ' + ', '.join(f"{u['email']} ({u['pct']:.1f}% hạn mức)" for u in X['upUsers']) if X['upUsers'] else ''}):
@@ -489,7 +489,7 @@ trong cùng profile? Cần kiểm tra trước khi lập kế hoạch theo phư�
 <th>Credit suy ra</th><th>Client</th></tr></thead>
 <tbody>{model_rows}</tbody></table></div></div>
 
-<h2>Chi tiết theo user — tháng {basis}</h2>
+<h2>Chi tiết theo user - tháng {basis}</h2>
 <div class="card full"><div class="sc"><table>
 <thead><tr><th>Email</th><th>Tier</th><th>Credit</th><th>Message</th><th>cr/msg</th>
 <th>% hạn mức</th><th>Ngày</th><th>% Opus</th><th>Client</th></tr></thead>
@@ -504,7 +504,7 @@ hay tên project. <b>Không có cơ sở</b> kết luận user dùng Kiro cho vi
 <li>Mặt tốt: <b>không có rủi ro lộ source code hay secret</b> qua log.</li>
 <li>Email ngoài domain ≠ dùng cá nhân. {len(X['noncorp'])} seat ngoài domain
 <code>{M.get('corpDomain','')}</code> cần tra IAM Identity Center, không kết luận từ tên email.</li>
-<li>{X['newUserCount']}/{bm['totals']['activeUsers']} user tháng {basis} là <b>user mới</b> —
+<li>{X['newUserCount']}/{bm['totals']['activeUsers']} user tháng {basis} là <b>user mới</b> -
 giai đoạn onboarding dùng nhiều là bình thường và có lợi cho adoption.
 Không lấy tháng này làm mức ổn định.</li>
 <li><code>by_user_analytic</code>: kiểm tra số cột toàn 0 trước khi dùng. Nếu telemetry inline
@@ -516,10 +516,10 @@ suggestion / code review chưa bật thì không đo được tỷ lệ chấp n
 <footer>
 Sinh bởi <code>scripts/build-dashboard.py</code> từ <code>data/monthly-metrics.json</code>,
 <code>data/model-metrics.json</code>, <code>data/scenarios.json</code>,
-<code>data/csv-metrics.json</code> — mọi con số trong trang này truy được về các file đó.<br>
+<code>data/csv-metrics.json</code> - mọi con số trong trang này truy được về các file đó.<br>
 Báo cáo kỹ thuật đầy đủ: <code>kiro-activity-report.md</code> ·
 Bản trình phê duyệt: <code>bao-cao-chi-phi-va-muc-dich-su-dung.html</code><br>
-<b>Chứa email nhân viên — lưu hành nội bộ.</b>
+<b>Chứa email nhân viên - lưu hành nội bộ.</b>
 </footer>
 </div>
 
@@ -716,7 +716,7 @@ def approval_html(D: dict, X: dict) -> str:
         if X["lookalike"]:
             look = ("<p><b>Cảnh báo đọc nhầm người:</b> "
                     + "; ".join(f"<b>{a}</b> và <b>{b}</b>" for a, b in X["lookalike"])
-                    + " gần giống nhau nhưng là <b>những người khác nhau</b> — rà soát phải "
+                    + " gần giống nhau nhưng là <b>những người khác nhau</b> - rà soát phải "
                       "đối chiếu bằng mã người dùng, không bằng email.</p>")
         noncorp_block = f"""<table>
 <thead><tr><th>Email</th><th>Gói</th><th>Chi phí/tháng</th>
@@ -727,7 +727,7 @@ def approval_html(D: dict, X: dict) -> str:
 <td>= ${nc_total * 12}/năm</td></tr>
 </tbody></table>
 <p>Các seat này <b>không thuộc domain {M.get('corpDomain', 'công ty')}</b>.
-Báo cáo <b>không kết luận</b> đây là sử dụng sai mục đích — có thể là nhà thầu hoặc đối tác
+Báo cáo <b>không kết luận</b> đây là sử dụng sai mục đích - có thể là nhà thầu hoặc đối tác
 được cấp quyền hợp lệ. Đề nghị bộ phận quản trị danh tính xác minh.</p>
 {look}"""
     else:
@@ -737,10 +737,10 @@ Báo cáo <b>không kết luận</b> đây là sử dụng sai mục đích — 
     return f"""<!doctype html>
 <html lang="vi"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Báo cáo chi phí Kiro Enterprise — đề nghị tối ưu — {X['customer']}</title>
+<title>Báo cáo chi phí Kiro Enterprise - đề nghị tối ưu - {X['customer']}</title>
 <style>{LIGHT_CSS}</style></head><body><div class="page">
 
-<div class="conf">LƯU HÀNH NỘI BỘ — tài liệu chứa email và số liệu sử dụng của nhân viên.
+<div class="conf">LƯU HÀNH NỘI BỘ - tài liệu chứa email và số liệu sử dụng của nhân viên.
 Không chia sẻ ra ngoài bộ phận quản lý trực tiếp và nhân sự có thẩm quyền.</div>
 
 <h1>Báo cáo chi phí Kiro Enterprise và đề nghị tối ưu</h1>
@@ -790,13 +790,13 @@ thông báo trước</b>. Tuyệt đối <b>không xử lý hồi tố</b>.</p>
 <tbody>
 <tr><td>Chọn model đắt cho việc thường</td>
 <td>~71% credit đi vào nhóm model đắt nhất</td>
-<td style="text-align:left"><b>Thói quen sử dụng</b> — sửa bằng hướng dẫn, không tốn tiền</td></tr>
+<td style="text-align:left"><b>Thói quen sử dụng</b> - sửa bằng hướng dẫn, không tốn tiền</td></tr>
 <tr><td>Trả tiền cho seat không dùng</td>
 <td>{a[3]['seats']} seat &lt;10% hạn mức = ${a[3]['monthlyUsd']:,}/tháng</td>
-<td style="text-align:left"><b>Cấp phát</b> — sửa bằng thu hồi seat</td></tr>
+<td style="text-align:left"><b>Cấp phát</b> - sửa bằng thu hồi seat</td></tr>
 <tr><td>{len(cens)} lượt nhân viên bị khoá giữa tháng</td>
 <td>6 người tháng 8, 2 người tháng 9</td>
-<td style="text-align:left"><b>Mất năng suất</b> — không phải vấn đề chi phí</td></tr>
+<td style="text-align:left"><b>Mất năng suất</b> - không phải vấn đề chi phí</td></tr>
 </tbody></table>
 
 <div class="box warn">
@@ -832,15 +832,15 @@ Một nhân viên đã bị khoá <b>hai tháng liên tiếp</b>.</p>
 <div class="box ok">
 <h4>Số liệu đã được đối chiếu độc lập</h4>
 <p>{'Số liệu được so với nguồn độc lập (' + X['cross']['source'] + '):' if X['cross'] else 'Chưa có nguồn đối chiếu độc lập cho kỳ này:'}
-sáu chỉ số — nhân viên hoạt động, credit, số ngày, số message, số nhân viên vượt ngưỡng cảnh báo,
-credit phát sinh ngoài hạn mức — <b>khớp tuyệt đối</b>.</p>
+sáu chỉ số - nhân viên hoạt động, credit, số ngày, số message, số nhân viên vượt ngưỡng cảnh báo,
+credit phát sinh ngoài hạn mức - <b>khớp tuyệt đối</b>.</p>
 </div>
 
-<h3>2.3 Phân bố mức dùng — nguồn gốc của cơ hội tiết kiệm</h3>
+<h3>2.3 Phân bố mức dùng - nguồn gốc của cơ hội tiết kiệm</h3>
 <div class="cw"><canvas id="k2"></canvas></div>
 <p class="note">Một phần ba số seat đang dùng dưới 10% hạn mức được cấp.</p>
 
-<h3>2.4 Chi phí đi đâu — phân tích theo model</h3>
+<h3>2.4 Chi phí đi đâu - phân tích theo model</h3>
 <div class="cw"><canvas id="k3"></canvas></div>
 <table>
 <thead><tr><th>Nhóm model</th><th>Số message</th><th>% message</th>
@@ -888,7 +888,7 @@ Họ bị hạn mức <b>cắt ngang</b>, nhu cầu thật cao hơn con số ghi
 
 <h2>3. Bốn đề nghị</h2>
 
-<h3>Đề nghị A — Hướng dẫn nhân viên đổi model mặc định</h3>
+<h3>Đề nghị A - Hướng dẫn nhân viên đổi model mặc định</h3>
 <p><b>Nội dung:</b> ban hành hướng dẫn dùng <code>auto</code> cho công việc thường ngày, chỉ chọn
 Opus cho bài toán khó. Trao đổi trực tiếp với 5 nhân viên có chi phí mỗi message cao nhất.</p>
 <p><b>Tác động chi phí:</b> không tốn thêm đồng nào để triển khai.</p>
@@ -901,7 +901,7 @@ Opus cho bài toán khó. Trao đổi trực tiếp với 5 nhân viên có chi 
 <p><b>Vì sao nên làm trước:</b> không cắt quyền của ai, không cần phê duyệt ngân sách, và xử lý
 đúng nguyên nhân khiến nhân viên bị khoá giữa tháng. <b>Rủi ro: thấp.</b></p>
 
-<h3>Đề nghị B — Điều chỉnh gói theo mức dùng thực tế</h3>
+<h3>Đề nghị B - Điều chỉnh gói theo mức dùng thực tế</h3>
 <p><b>Nội dung:</b> hạ gói cho nhân viên dùng ít, <b>giữ nguyên</b> gói cho
 {len(S['optionB_rightSize']['censoredUsersKept'])} nhân viên bị khoá tháng 8, và <b>nâng</b> gói
 cho {len(X['upUsers'])} nhân viên đang gần chạm hạn mức{' (' + ', '.join(f"{u['email']} {u['pct']:.1f}%" for u in X['upUsers']) + ')' if X['upUsers'] else ''}.</p>
@@ -916,15 +916,15 @@ cho {len(X['upUsers'])} nhân viên đang gần chạm hạn mức{' (' + ', '.j
 <td>${S['optionB_rightSize']['safeSavingYearlyUsd']:,}</td></tr>
 </tbody></table>
 <div class="box warn">
-<h4>Điều kiện chưa xác nhận — cần kiểm tra trước khi phê duyệt</h4>
+<h4>Điều kiện chưa xác nhận - cần kiểm tra trước khi phê duyệt</h4>
 <p>Đề nghị này giả định Kiro Console cho phép đặt <b>gói khác nhau cho từng nhân viên</b> trong
 cùng một profile. Chưa xác minh được từ bên ngoài. Nếu gói bị ràng buộc theo profile, phải tách
 nhiều profile, và chi phí quản trị của việc đó <b>có thể lớn hơn tiền tiết kiệm</b>.</p>
 </div>
 <p><b>Rủi ro: trung bình.</b> 18 nhân viên được xếp vào diện "hạ xuống mức thấp nhất" thực chất là
-ứng viên thu hồi seat chứ không phải hạ gói — cần xác nhận từng trường hợp với quản lý trực tiếp.</p>
+ứng viên thu hồi seat chứ không phải hạ gói - cần xác nhận từng trường hợp với quản lý trực tiếp.</p>
 
-<h3>Đề nghị C — Thu hồi seat không sử dụng, làm theo từng bước</h3>
+<h3>Đề nghị C - Thu hồi seat không sử dụng, làm theo từng bước</h3>
 <table>
 <thead><tr><th>Bước</th><th>Đối tượng</th><th>Số seat</th><th>Tiết kiệm/tháng</th>
 <th>Tiết kiệm/năm</th></tr></thead>
@@ -933,37 +933,37 @@ nhiều profile, và chi phí quản trị của việc đó <b>có thể lớn 
 </tbody></table>
 <p><b>Đề xuất:</b> phê duyệt <b>bước 1 và 2</b> ngay (${a[1]['monthlyUsd']:,}/tháng =
 ${a[1]['yearlyUsd']:,}/năm), hoãn bước 3–4 đến đầu tháng 10 khi có trọn hai tháng dữ liệu.</p>
-<p><b>Rủi ro: trung bình đến cao nếu làm gấp.</b> Tháng 8 là tháng onboarding — nhân viên chưa
+<p><b>Rủi ro: trung bình đến cao nếu làm gấp.</b> Tháng 8 là tháng onboarding - nhân viên chưa
 dùng có thể đang học công cụ. <b>Bắt buộc xác nhận với quản lý trực tiếp</b> trước khi thu hồi
 từng seat. Thu hồi sai gây mất động lực và làm chậm phổ cập công cụ.</p>
 
-<h3>Đề nghị D — Xác minh {len(X['noncorp'])} seat dùng email ngoài domain</h3>
+<h3>Đề nghị D - Xác minh {len(X['noncorp'])} seat dùng email ngoài domain</h3>
 <p><b>Nội dung:</b> bộ phận quản trị danh tính (IAM Identity Center) xác minh {len(X['noncorp'])} tài khoản ngoài domain;
 nếu là tài khoản cá nhân hoặc nhà thầu đã kết thúc hợp đồng thì thu hồi.</p>
 <p><b>Tác động chi phí:</b> tối đa <b>${sum(n['usd'] for n in X['noncorp'])}/tháng = ${sum(n['usd'] for n in X['noncorp'])*12:,}/năm</b>.</p>
 <p><b>Vì sao cần làm sớm:</b> đây là vấn đề <b>kiểm soát truy cập</b>, không chỉ là chi phí.
 Tài khoản ngoài domain công ty có quyền dùng công cụ nội bộ là điểm cần rà soát về an toàn
 thông tin, độc lập với việc tiết kiệm bao nhiêu tiền. <b>Rủi ro: thấp</b>, nhưng cần xác minh
-trước khi thu hồi — nếu là nhà thầu đang làm việc thì thu hồi sẽ gián đoạn công việc của họ.</p>
+trước khi thu hồi - nếu là nhà thầu đang làm việc thì thu hồi sẽ gián đoạn công việc của họ.</p>
 
 <h2>4. Tổng hợp tác động chi phí</h2>
 <table>
 <thead><tr><th>Đề nghị</th><th>Tiết kiệm/tháng</th><th>Tiết kiệm/năm</th><th>Rủi ro</th>
 <th>Cần phê duyệt ngân sách</th></tr></thead>
 <tbody>
-<tr><td>A — Hướng dẫn đổi model</td>
+<tr><td>A - Hướng dẫn đổi model</td>
 <td>${c_['scenarios'][0]['creditsSavedToAutoPerBasisMonth']/10000*200:,.0f} –
 ${c_['scenarios'][2]['creditsSavedToAutoPerBasisMonth']/10000*200:,.0f}</td>
 <td>${c_['scenarios'][0]['creditsSavedToAutoPerBasisMonth']/10000*2400:,.0f} –
 ${c_['scenarios'][2]['creditsSavedToAutoPerBasisMonth']/10000*2400:,.0f}</td>
 <td>Thấp</td><td>Không</td></tr>
-<tr><td>B — Điều chỉnh gói</td>
+<tr><td>B - Điều chỉnh gói</td>
 <td>${S['optionB_rightSize']['safeSavingMonthlyUsd']:,}</td>
 <td>${S['optionB_rightSize']['safeSavingYearlyUsd']:,}</td>
 <td>Trung bình</td><td>Không (giảm chi)</td></tr>
-<tr><td>C — Thu hồi seat (bước 1–2)</td><td>${a[1]['monthlyUsd']:,}</td>
+<tr><td>C - Thu hồi seat (bước 1–2)</td><td>${a[1]['monthlyUsd']:,}</td>
 <td>${a[1]['yearlyUsd']:,}</td><td>Trung bình</td><td>Không (giảm chi)</td></tr>
-<tr><td>D — Xác minh email cá nhân</td><td>tối đa ${sum(n['usd'] for n in X['noncorp'])}</td><td>tối đa ${sum(n['usd'] for n in X['noncorp'])*12:,}</td>
+<tr><td>D - Xác minh email cá nhân</td><td>tối đa ${sum(n['usd'] for n in X['noncorp'])}</td><td>tối đa ${sum(n['usd'] for n in X['noncorp'])*12:,}</td>
 <td>Thấp</td><td>Không</td></tr>
 </tbody></table>
 <div class="box">
@@ -997,7 +997,7 @@ license hiện tại</b>.</p>
 </tbody></table>
 <div class="box warn">
 <h4>Hai việc phải làm trước khi trình số $ ra ngoài tài liệu này</h4>
-<p>1. Xác nhận bảng giá hiện hành tại <b>kiro.dev/pricing</b> — báo cáo dùng giá PRO_MAX $100
+<p>1. Xác nhận bảng giá hiện hành tại <b>kiro.dev/pricing</b> - báo cáo dùng giá PRO_MAX $100
 và POWER $200 mỗi tháng.<br>
 2. Xác nhận trong <b>Kiro Console</b> rằng gói có thể đặt riêng cho từng nhân viên.</p>
 </div>
@@ -1121,7 +1121,7 @@ def main() -> None:
     os.makedirs(args.out_dir, exist_ok=True)
 
     # Dashboard kỹ thuật giữ định dạng số en-US (monospace, đọc bằng mắt kỹ thuật).
-    # Bản trình phê duyệt đổi sang định dạng số Việt Nam — chỉ phần tài liệu,
+    # Bản trình phê duyệt đổi sang định dạng số Việt Nam - chỉ phần tài liệu,
     # phần <script> giữ nguyên vì JS/JSON bắt buộc dấu chấm thập phân.
     p = os.path.join(args.out_dir, "kiro-activity-report.html")
     with open(p, "w", encoding="utf-8") as fh:
@@ -1138,7 +1138,7 @@ def main() -> None:
     print(f"[+] {p}  ({os.path.getsize(p):,} bytes)  [số định dạng vi-VN]")
 
     if not ctx["cross"]:
-        print("[i] Không có nguồn đối chiếu độc lập — chạy scenarios.py với --crosscheck "
+        print("[i] Không có nguồn đối chiếu độc lập - chạy scenarios.py với --crosscheck "
               "để đưa phần đối chiếu vào báo cáo.")
     print(f"[i] Ví dụ so sánh model được SUY TỪ DỮ LIỆU: "
           f"{ctx['ex_costly']['email']} vs {ctx['ex_cheap']['email']}")

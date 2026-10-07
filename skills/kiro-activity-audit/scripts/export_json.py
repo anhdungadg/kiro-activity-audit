@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Xuất metrics.json từ snapshot Kiro prompt-logs — dùng cho HTML dashboard.
+Xuất metrics.json từ snapshot Kiro prompt-logs - dùng cho HTML dashboard.
 
 Account-agnostic: mọi giá trị đều suy ra từ dữ liệu, không hardcode.
 Chạy từ TRONG thư mục snapshot (nơi có prompt-logs/ và user-activity-reports/).
@@ -24,7 +24,7 @@ from collections import Counter, defaultdict
 from datetime import datetime, timedelta, timezone
 
 # ---------------------------------------------------------------------------
-# Múi giờ hiển thị — đổi bằng biến môi trường KIRO_AUDIT_TZ (số giờ lệch UTC).
+# Múi giờ hiển thị - đổi bằng biến môi trường KIRO_AUDIT_TZ (số giờ lệch UTC).
 #   export KIRO_AUDIT_TZ=7    → GMT+7 (Việt Nam, mặc định)
 #   export KIRO_AUDIT_TZ=8    → GMT+8 (Singapore, Malaysia)
 #   export KIRO_AUDIT_TZ=0    → UTC
@@ -40,7 +40,7 @@ def vn(iso: str) -> str:
     return datetime.fromisoformat(iso.replace('Z', '+00:00')).astimezone(LOCAL_TZ).strftime('%d/%m %H:%M:%S')
 
 # --------------------------------------------------------------------------- #
-# Pattern quét dữ liệu nhạy cảm — 16 lớp
+# Pattern quét dữ liệu nhạy cảm - 16 lớp
 # --------------------------------------------------------------------------- #
 SENSITIVE_PATTERNS: dict[str, str] = {
     "AWS access key": r"AKIA[0-9A-Z]{16}",
@@ -61,10 +61,10 @@ SENSITIVE_PATTERNS: dict[str, str] = {
     "K8s internal DNS": r"[a-z0-9.\-{}]+\.svc\.cluster\.local",
 }
 
-# 9 lớp đầu là secret VALUE — có hit nghĩa là sự cố thật
+# 9 lớp đầu là secret VALUE - có hit nghĩa là sự cố thật
 CRITICAL = list(SENSITIVE_PATTERNS)[:9]
 
-# Từ khoá stack công nghệ — mở rộng tuỳ dự án
+# Từ khoá stack công nghệ - mở rộng tuỳ dự án
 TECH_TERMS = [
     "cassandra", "medusa", "backup", "purge", "kubernetes", "sidecar", "registry",
     "argocd", "namespace", "CronJob", "ECR", "helm", "Taskfile", "karpenter",
@@ -282,7 +282,7 @@ def main() -> None:
             "snapshot": args.snapshot or datetime.now(timezone.utc)
                         .strftime("%Y-%m-%dT%H:%M:%SZ"),
             "snapshotLocal": datetime.now(LOCAL_TZ).strftime("%d/%m/%Y %H:%M") +  " " + TZ_LABEL,
-            "timezone": f"{TZ_LABEL} — mọi mốc thời gian trong file này hiển thị theo giờ địa phương",
+            "timezone": f"{TZ_LABEL} - mọi mốc thời gian trong file này hiển thị theo giờ địa phương",
             "sourceAccount": account,
             "bucket": args.bucket or "",
             "identityStoreId": identity_store,
@@ -355,7 +355,7 @@ def main() -> None:
               f"{vn(max(s for s, _ in stamps))} ({TZ_LABEL})")
     crit = out["sensitive"]["criticalHits"]
     if crit:
-        print(f"    ⚠️  SECRET  : {len(crit)} lớp CÓ HIT — {', '.join(crit)}")
+        print(f"    ⚠️  SECRET  : {len(crit)} lớp CÓ HIT - {', '.join(crit)}")
         print("        → kiểm tra ngay, đây có thể là sự cố lộ credential")
     else:
         print(f"    secret    : 0 hit trên {len(CRITICAL)} lớp nguy hiểm ✓")

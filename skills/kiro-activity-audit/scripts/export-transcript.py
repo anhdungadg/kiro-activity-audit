@@ -11,7 +11,7 @@ Script này đọc messages.jsonl và xuất:
   - in ra terminal bảng credit theo từng lượt
 
 ĐIỂM ĐÁNG CHÚ Ý: bản ghi `usage_summary` trong session store chứa
-**credit tiêu thụ thật của từng lượt** (unit: "credit") — dữ liệu này KHÔNG có
+**credit tiêu thụ thật của từng lượt** (unit: "credit") - dữ liệu này KHÔNG có
 trong S3 prompt-logs. Đây là nguồn duy nhất để biết chi phí ở mức per-turn
 trước khi báo cáo CSV hằng ngày của Kiro được sinh ra.
 
@@ -37,7 +37,7 @@ import sys
 from datetime import datetime, timedelta, timezone
 
 # ---------------------------------------------------------------------------
-# Múi giờ hiển thị — đổi bằng biến môi trường KIRO_AUDIT_TZ (số giờ lệch UTC).
+# Múi giờ hiển thị - đổi bằng biến môi trường KIRO_AUDIT_TZ (số giờ lệch UTC).
 #   export KIRO_AUDIT_TZ=7    → GMT+7 (Việt Nam, mặc định)
 #   export KIRO_AUDIT_TZ=8    → GMT+8 (Singapore, Malaysia)
 #   export KIRO_AUDIT_TZ=0    → UTC
@@ -100,7 +100,7 @@ def pick_session(args) -> dict:
     same = [s for s in sessions if s["cwd"] and (s["cwd"] == cwd or cwd.startswith(s["cwd"]))]
     chosen = (same or sessions)[0]
     if not same:
-        print(f"[!] Không có session nào khớp thư mục hiện tại — dùng session mới nhất "
+        print(f"[!] Không có session nào khớp thư mục hiện tại - dùng session mới nhất "
               f"({chosen['id']})", file=sys.stderr)
     return chosen
 
@@ -201,7 +201,7 @@ def build(records: list[dict]) -> dict:
 
 def write_md(sess: dict, data: dict, out: Path) -> None:
     L: list[str] = []
-    L.append(f"# Kiro CLI transcript — `{sess['id']}`\n")
+    L.append(f"# Kiro CLI transcript - `{sess['id']}`\n")
     L.append(f"| | |\n|---|---|")
     L.append(f"| Session ID | `{sess['id']}` |")
     if sess["title"]:
@@ -232,15 +232,15 @@ def write_md(sess: dict, data: dict, out: Path) -> None:
         L.append(f"| # | Thời điểm {TZ_LABEL} | Credit | Thời gian | Trạng thái | Tool |\n"
                  "|---:|---|---:|---:|---|---|")
         for i, c in enumerate(data["credits"], 1):
-            secs = f"{c['elapsedMs'] / 1000:.1f}s" if c.get("elapsedMs") else "—"
-            tl = ", ".join(f"`{t}`" for t in c["usedTools"][:6]) or "—"
+            secs = f"{c['elapsedMs'] / 1000:.1f}s" if c.get("elapsedMs") else "-"
+            tl = ", ".join(f"`{t}`" for t in c["usedTools"][:6]) or "-"
             L.append(f"| {i} | {ts_fmt(c['ts'])} | {c['credit']:.3f} | {secs} | "
-                     f"{c.get('status') or '—'} | {tl} |")
+                     f"{c.get('status') or '-'} | {tl} |")
         L.append(f"| | **Tổng** | **{data['totalCredit']:.3f}** | | | |\n")
 
     L.append("---\n\n## Hội thoại\n")
     for i, t in enumerate(data["turns"], 1):
-        L.append(f"### Lượt {i} — {ts_fmt(t['ts'])} {TZ_LABEL}")
+        L.append(f"### Lượt {i} - {ts_fmt(t['ts'])} {TZ_LABEL}")
         if t["credit"] is not None:
             secs = f" · {t['elapsedMs'] / 1000:.1f}s" if t.get("elapsedMs") else ""
             L.append(f"*{t['credit']:.3f} credit{secs}*")
@@ -333,7 +333,7 @@ def main() -> None:
     out.with_suffix(".json").write_text(
         json.dumps(payload, indent=2, ensure_ascii=False), encoding="utf-8")
     print(f"\n[+] Đã ghi {out.with_suffix('.md')} và {out.with_suffix('.json')}")
-    print("[!] Transcript chứa nguyên văn prompt và output tool — không commit lên repo công khai.")
+    print("[!] Transcript chứa nguyên văn prompt và output tool - không commit lên repo công khai.")
 
 
 if __name__ == "__main__":

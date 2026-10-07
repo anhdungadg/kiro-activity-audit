@@ -19,7 +19,7 @@ VÍ DỤ:
     python3 map-users.py --discover --profile <profile>
 
     # 1. Map từ log đã sync về
-    sync-snapshot.sh   # (BUCKET=… PROFILE=…) — đừng sync cả bucket, sẽ timeout
+    sync-snapshot.sh   # (BUCKET=… PROFILE=…) - đừng sync cả bucket, sẽ timeout
     python3 map-users.py --logs ./kiro-audit-<account>/data/snapshot-<ts> --profile <idc-profile>
 
     # 2. Map một userId đơn lẻ
@@ -173,7 +173,7 @@ def describe_users(user_ids: list[str], profile: str | None, region: str,
 
 
 def list_all_users(store_id: str, profile: str | None, region: str) -> list[dict]:
-    """Dump toàn bộ user trong identity store — dùng để join offline."""
+    """Dump toàn bộ user trong identity store - dùng để join offline."""
     client = get_client("identitystore", profile, region)
     users: list[dict] = []
     token = None

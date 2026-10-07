@@ -5,7 +5,7 @@ from collections import Counter, defaultdict
 from datetime import datetime, timedelta, timezone
 
 # ---------------------------------------------------------------------------
-# Múi giờ hiển thị — đổi bằng biến môi trường KIRO_AUDIT_TZ (số giờ lệch UTC).
+# Múi giờ hiển thị - đổi bằng biến môi trường KIRO_AUDIT_TZ (số giờ lệch UTC).
 #   export KIRO_AUDIT_TZ=7    → GMT+7 (Việt Nam, mặc định)
 #   export KIRO_AUDIT_TZ=8    → GMT+8 (Singapore, Malaysia)
 #   export KIRO_AUDIT_TZ=0    → UTC

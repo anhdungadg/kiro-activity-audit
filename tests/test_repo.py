@@ -121,7 +121,7 @@ async def mcp_check():
 try:
     asyncio.run(mcp_check())
 except ModuleNotFoundError:
-    ok(False, "thiếu thư viện mcp — chạy bằng: uv run --with 'mcp>=1.20,<2' python3 tests/test_repo.py")
+    ok(False, "thiếu thư viện mcp - chạy bằng: uv run --with 'mcp>=1.20,<2' python3 tests/test_repo.py")
 
 print(f"\n{'✗ ' + str(len(fails)) + ' lỗi' if fails else '✓ tất cả đạt'}")
 sys.exit(1 if fails else 0)

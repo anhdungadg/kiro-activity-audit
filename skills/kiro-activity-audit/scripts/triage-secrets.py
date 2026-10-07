@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Phân loại các hit secret mà export_json.py báo — gắn người dùng, thời điểm, nguồn, mức độ.
+"""Phân loại các hit secret mà export_json.py báo - gắn người dùng, thời điểm, nguồn, mức độ.
 
 KHÔNG in / KHÔNG lưu giá trị secret thật: mọi giá trị đều được che (4 ký tự đầu + độ dài).
 Kết quả ghi ra data/secret-triage.json để đưa vào báo cáo.
@@ -39,7 +39,7 @@ def mask(v: str) -> str:
     return f"{v[:4]}…({len(v)})"
 
 
-# Che mọi thứ trông giống secret trong đoạn ngữ cảnh — kể cả secret KHÁC nằm cạnh secret được match
+# Che mọi thứ trông giống secret trong đoạn ngữ cảnh - kể cả secret KHÁC nằm cạnh secret được match
 _CTX_SCRUB = [
     re.compile(r"((?i:password|passwd|pwd|secret|token|api[_-]?key|apikey|credential|clientid|client_id|appkey)[\w.\-]*\s*[:=]\s*[\"']?)([^\s\"'&,;}]{6,})"),
     re.compile(r"(://[^:/@\s]*:)([^@\s]+)(@)"),
@@ -95,7 +95,7 @@ def texts(rec: dict):
     if "generateAssistantResponseEventRequest" in rec:
         q = rec["generateAssistantResponseEventRequest"]
         p = q.get("prompt") or ""
-        # Kiro nhúng file đang mở vào prompt — tách để biết secret do người dán hay do IDE tự đính kèm
+        # Kiro nhúng file đang mở vào prompt - tách để biết secret do người dán hay do IDE tự đính kèm
         auto = "".join(re.findall(r"<(?:OPEN-EDITOR-FILES|ACTIVE-EDITOR-FILE|EnvironmentContext)[^>]*>.*?</(?:OPEN-EDITOR-FILES|ACTIVE-EDITOR-FILE|EnvironmentContext)>", p, re.S))
         typed = p
         for blk in re.findall(r"<(?:OPEN-EDITOR-FILES|ACTIVE-EDITOR-FILE|EnvironmentContext)[^>]*>.*?</(?:OPEN-EDITOR-FILES|ACTIVE-EDITOR-FILE|EnvironmentContext)>", p, re.S):

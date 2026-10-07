@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""End-to-end trên một bucket thật, qua MCP stdio — CHỈ ĐỌC trên AWS.
+"""End-to-end trên một bucket thật, qua MCP stdio - CHỈ ĐỌC trên AWS.
 
     E2E_BUCKET=kiro-activity-<acct>-us-east-1-xx E2E_PROFILE=<p> E2E_WORK='acme|acm-' \
     E2E_SERVER='uvx --from dist/kiro_audit_mcp-0.1.0-py3-none-any.whl kiro-audit-mcp' \

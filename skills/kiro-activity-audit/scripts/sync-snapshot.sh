@@ -9,7 +9,7 @@
 #
 # Biến môi trường (BUCKET, PROFILE bắt buộc):
 #   BUCKET=kiro-activity-<acct>-<region>-xx  PROFILE=<aws-profile>  WORKDIR=./kiro-audit-<acct>
-#   ACCOUNT  (mặc định: suy ra từ tên bucket)   REGION (mặc định us-east-1 — vùng của prefix log)
+#   ACCOUNT  (mặc định: suy ra từ tên bucket)   REGION (mặc định us-east-1 - vùng của prefix log)
 #   JOBS=6   CSV_ONLY=1   DAYS=30 (số ngày lấy khi chưa có snapshot nào)
 #
 # Ví dụ:
@@ -19,7 +19,7 @@ set -eu
 : "${BUCKET:?Thiếu BUCKET}"
 : "${PROFILE:?Thiếu PROFILE}"
 ACCOUNT="${ACCOUNT:-$(echo "$BUCKET" | grep -oE '[0-9]{12}' | head -1)}"
-: "${ACCOUNT:?Không suy ra được ACCOUNT từ tên bucket — đặt ACCOUNT=}"
+: "${ACCOUNT:?Không suy ra được ACCOUNT từ tên bucket - đặt ACCOUNT=}"
 REGION="${REGION:-us-east-1}"
 JOBS="${JOBS:-6}"
 WORKDIR="${WORKDIR:-./kiro-audit-$ACCOUNT}"
@@ -28,7 +28,7 @@ BASE="prompt-logs/AWSLogs/$ACCOUNT/KiroLogs"
 mkdir -p "$WORKDIR/data"
 cd "$WORKDIR"
 [ -f data/.gitignore ] || cat > data/.gitignore <<'EOF'
-# Raw log Kiro: source code, prompt nguyên văn, CREDENTIAL THẬT — không commit, không chia sẻ
+# Raw log Kiro: source code, prompt nguyên văn, CREDENTIAL THẬT - không commit, không chia sẻ
 snapshot-*/
 *.json.gz
 metrics.json
@@ -41,7 +41,7 @@ SNAP="data/snapshot-$(date -u +%Y%m%d-%H%MZ)"
 [ -n "$PREV" ] && { echo "[+] copy $PREV → $SNAP"; cp -R "$PREV" "$SNAP"; } || mkdir -p "$SNAP"
 echo "$SNAP" > data/.latest-snapshot
 
-# AWS CLI mặc định 10 request song song/lệnh — object log rất nhỏ (~4 KB) nên nút cổ chai là số request
+# AWS CLI mặc định 10 request song song/lệnh - object log rất nhỏ (~4 KB) nên nút cổ chai là số request
 CFG=$(mktemp); [ -f ~/.aws/config ] && cp ~/.aws/config "$CFG"
 python3 - "$CFG" "$PROFILE" <<'PY'
 import configparser, sys
@@ -57,7 +57,7 @@ echo "[+] sync CSV (user-activity-reports/)"
 aws s3 sync "s3://$BUCKET/user-activity-reports/" "$SNAP/user-activity-reports/" \
   --profile "$PROFILE" --only-show-errors
 echo "    $(find "$SNAP/user-activity-reports" -name '*.csv' | wc -l | tr -d ' ') CSV"
-[ "${CSV_ONLY:-0}" = 1 ] && { echo "[✓] CSV_ONLY — xong: $SNAP"; exit 0; }
+[ "${CSV_ONLY:-0}" = 1 ] && { echo "[✓] CSV_ONLY - xong: $SNAP"; exit 0; }
 
 # ngày bắt đầu = ngày của snapshot trước − 1 (snapshot đặt tên theo UTC: snapshot-YYYYMMDD-HHMMZ)
 if [ -n "$PREV" ]; then
@@ -80,13 +80,13 @@ while d <= b:
     d += dt.timedelta(days=1)
 PY
 # các file validation nằm thẳng dưới KiroLogs/ (không theo ngày). KHÔNG dùng cp --recursive
-# (sẽ liệt kê cả 150k+ object bên dưới) — `s3 ls` không đệ quy dùng delimiter nên chỉ trả cấp đầu.
+# (sẽ liệt kê cả 150k+ object bên dưới) - `s3 ls` không đệ quy dùng delimiter nên chỉ trả cấp đầu.
 aws s3 ls "s3://$BUCKET/$BASE/" --profile "$PROFILE" | awk '$1 != "PRE" {print $4}' | while read -r f; do
   [ -n "$f" ] && [ ! -f "$SNAP/$BASE/$f" ] && \
     aws s3 cp "s3://$BUCKET/$BASE/$f" "$SNAP/$BASE/$f" --profile "$PROFILE" --only-show-errors
 done || true
 
-# worker riêng — `xargs -I{}` trên macOS giới hạn độ dài lệnh thay thế (~255 byte)
+# worker riêng - `xargs -I{}` trên macOS giới hạn độ dài lệnh thay thế (~255 byte)
 WORKER=$(mktemp)
 cat > "$WORKER" <<'EOW'
 p="$1"
@@ -106,4 +106,4 @@ echo "[+] prefix: $ok OK · $fail FAIL / $(wc -l < "$LIST" | tr -d ' ')"
 grep '^FAIL' "$DONE" || true
 rm -f "$LIST" "$DONE"
 echo "[✓] $SNAP · $(find "$SNAP" -type f | wc -l | tr -d ' ') file · $(du -sh "$SNAP" | cut -f1)"
-[ "$fail" = 0 ] || { echo "[!] Có prefix lỗi — chạy lại script (sẽ chỉ tải phần thiếu)"; exit 1; }
+[ "$fail" = 0 ] || { echo "[!] Có prefix lỗi - chạy lại script (sẽ chỉ tải phần thiếu)"; exit 1; }

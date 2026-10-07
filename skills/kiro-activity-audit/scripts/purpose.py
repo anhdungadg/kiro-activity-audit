@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """Đánh giá mục đích sử dụng theo từng người: file/dự án nào được mở, câu hỏi nhắc tới gì.
 
-Chỉ là TÍN HIỆU để biết cần trao đổi với ai — KHÔNG đủ làm căn cứ xử lý (xem giới hạn bên dưới).
+Chỉ là TÍN HIỆU để biết cần trao đổi với ai - KHÔNG đủ làm căn cứ xử lý (xem giới hạn bên dưới).
 
-Tổ chức tự cung cấp pattern — script không hardcode tên công ty nào:
+Tổ chức tự cung cấp pattern - script không hardcode tên công ty nào:
     --work      regex nhận diện việc công ty  (vd: 'acme|\\bacm-|com\\.acme\\.')
     --personal  regex nhận diện việc cá nhân  (mặc định: trading bot, forex, crypto exchange…)
 
@@ -11,7 +11,7 @@ Ví dụ:
     python3 purpose.py --root data/snapshot-XXXX --work 'acme|acm-' --since 2026-09-10 --json data/purpose.json
 
 Giới hạn PHẢI nêu khi báo cáo:
-  1. Từ khoá nhiễu ("english", "crypto" xuất hiện trong lệnh/thư viện bình thường) — chỉ kết luận khi
+  1. Từ khoá nhiễu ("english", "crypto" xuất hiện trong lệnh/thư viện bình thường) - chỉ kết luận khi
      TÊN DỰ ÁN (thư mục gốc) và nội dung cùng chỉ về một hướng.
   2. Không có file path ≠ bất thường (một số client không gửi ngữ cảnh file).
   3. Chưa có hướng dẫn sử dụng / chưa thông báo thu thập log → không xử lý hồi tố.
@@ -45,7 +45,7 @@ def email_map(root):
 
 
 def project_of(path: str) -> str:
-    """Thư mục gốc có nghĩa đầu tiên — xấp xỉ tên dự án."""
+    """Thư mục gốc có nghĩa đầu tiên - xấp xỉ tên dự án."""
     parts = [p for p in re.split(r"[\\/]", path) if p]
     if path.startswith("/Users/") or path.startswith("/home/"):
         parts = parts[2:]                       # bỏ /Users/<username>
@@ -60,7 +60,7 @@ def main():
     ap.add_argument("--root", required=True, help="thư mục snapshot")
     ap.add_argument("--work", required=True, help="regex việc công ty")
     ap.add_argument("--personal", default=PERSONAL_DEFAULT)
-    ap.add_argument("--since", help="YYYY-MM-DD — chỉ xét file log từ ngày này (theo đường dẫn log UTC)")
+    ap.add_argument("--since", help="YYYY-MM-DD - chỉ xét file log từ ngày này (theo đường dẫn log UTC)")
     ap.add_argument("--json")
     a = ap.parse_args()
     WORK, PERS = re.compile(a.work, re.I), re.compile(a.personal)
@@ -126,11 +126,11 @@ def main():
     print(f"{'user':34} {'prompt':>6} {'%CV':>5} {'%riêng':>7} {'file':>5} {'%mởCV':>6}  dự án chính")
     for u, v in out.items():
         top = ", ".join(f"{k}:{c}" for k, c in v["topProjects"][:3])
-        ws = "—" if v["workOpenSharePct"] is None else f"{v['workOpenSharePct']:.0f}"
+        ws = "-" if v["workOpenSharePct"] is None else f"{v['workOpenSharePct']:.0f}"
         print(f"{u[:34]:34} {v['prompts']:6} {v['workPromptPct']:5.0f} {v['personalPromptPct']:7.1f} "
               f"{v['files']:5} {ws:>6}  {top}{'  ← XEM' if v['flag'] else ''}")
     flagged = [u for u, v in out.items() if v["flag"]]
-    print(f"\n[i] {len(flagged)} người cần xem kỹ: {', '.join(flagged) or '—'}")
+    print(f"\n[i] {len(flagged)} người cần xem kỹ: {', '.join(flagged) or '-'}")
     print("[i] Không có file path ≠ bất thường. Chỉ dùng để biết cần trao đổi với ai, không xử lý hồi tố.")
     if a.json:
         json.dump(out, open(a.json, "w", encoding="utf-8"), ensure_ascii=False, indent=1)

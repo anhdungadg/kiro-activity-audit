@@ -1,7 +1,7 @@
 """Che giá trị secret trong MỌI chuỗi trước khi trả về cho model.
 
 Đây là lớp bảo vệ thứ hai: script đã tự che, nhưng mọi stdout/stderr/log mà server trả về
-vẫn đi qua đây — model không bao giờ thấy giá trị thật kể cả khi một script có lỗi.
+vẫn đi qua đây - model không bao giờ thấy giá trị thật kể cả khi một script có lỗi.
 """
 import re
 
@@ -32,7 +32,7 @@ def redact(s: str) -> str:
     s = _TOKEN.sub(lambda m: mask(m.group(0)), s)
     s = _KV.sub(lambda m: m.group(1) + "<REDACTED>", s)
     s = _URL_PW.sub(lambda m: m.group(1) + "<REDACTED>" + m.group(3), s)
-    # chuỗi 40 ký tự có cả hoa, thường, số — dạng AWS secret key
+    # chuỗi 40 ký tự có cả hoa, thường, số - dạng AWS secret key
     s = _AWS_SECRET.sub(
         lambda m: "<REDACTED-40>" if (re.search(r"[a-z]", m.group(0)) and re.search(r"[A-Z]", m.group(0))
                                       and re.search(r"[0-9/+]", m.group(0))) else m.group(0), s)

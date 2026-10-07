@@ -42,7 +42,7 @@ def main() -> None:
     ap.add_argument("--model", required=True)
     ap.add_argument("--min-active-days", type=int, default=10,
                     help="Không hạ gói user có ít ngày hoạt động hơn mức này trong tháng căn cứ "
-                         "(mặc định 10). Người mới vào giữa tháng có số liệu bị hạ thấp — đã từng hạ nhầm "
+                         "(mặc định 10). Người mới vào giữa tháng có số liệu bị hạ thấp - đã từng hạ nhầm "
                          "một người về sau bị chặn.")
     ap.add_argument("--crosscheck",
                     help="Đối chiếu với nguồn độc lập. Định dạng: "
@@ -61,7 +61,7 @@ def main() -> None:
     coef = D["nnls"]["creditPerMessageByModel"]
 
     print("=" * 100)
-    print(f"CĂN CỨ: tháng {basis} — {cov['daysWithData']}/{cov['daysInMonth']} ngày dữ liệu "
+    print(f"CĂN CỨ: tháng {basis} - {cov['daysWithData']}/{cov['daysInMonth']} ngày dữ liệu "
           f"({cov['first']} → {cov['last']})")
     print(f"  {bm['totals']['activeUsers']} user active · "
           f"{bm['totals']['credits']:,.0f} credit · {bm['totals']['messages']:,} message · "
@@ -77,7 +77,7 @@ def main() -> None:
     cur_total = M["rightSize"]["currentMonthlyUsd"]
 
     # ---------------- PHƯƠNG ÁN A: thu hồi seat ----------------
-    print("PHƯƠNG ÁN A — THU HỒI SEAT")
+    print("PHƯƠNG ÁN A - THU HỒI SEAT")
     print("-" * 100)
     bands = [(0.0, "không dùng (0 credit)"),
              (0.5, "< 0,5% hạn mức"),
@@ -102,7 +102,7 @@ def main() -> None:
     print()
 
     # ---------------- PHƯƠNG ÁN B: right-size ----------------
-    print("PHƯƠNG ÁN B — RIGHT-SIZE TIER")
+    print("PHƯƠNG ÁN B - RIGHT-SIZE TIER")
     print("-" * 100)
     b_rows, b_new, kept_censored, kept_thin = [], 0, [], []
     active = {u["userId"]: u.get("activeDays", 0)
@@ -132,14 +132,14 @@ def main() -> None:
           f"{', '.join(kept_censored)}")
     print("    Lý do: mức dùng của họ bị hạn mức cắt ngang, nhu cầu thật cao hơn số quan sát.")
     if kept_thin:
-        print(f"  → {len(kept_thin)} user CHƯA ĐỦ {args.min_active_days} ngày hoạt động — giữ nguyên, xem lại kỳ sau: "
+        print(f"  → {len(kept_thin)} user CHƯA ĐỦ {args.min_active_days} ngày hoạt động - giữ nguyên, xem lại kỳ sau: "
               f"{', '.join(kept_thin)}")
     down = [r for r in b_rows if r["safeDeltaUsd"] < 0]
     print(f"  → {len(down)} user hạ tier được")
     print()
 
     # ---------------- PHƯƠNG ÁN C: đổi model ----------------
-    print("PHƯƠNG ÁN C — ĐỔI MODEL (không đổi tier, không thu hồi seat)")
+    print("PHƯƠNG ÁN C - ĐỔI MODEL (không đổi tier, không thu hồi seat)")
     print("-" * 100)
     msgs = D["messagesByModel"]
     c_auto = coef.get("auto", 0)
@@ -210,7 +210,7 @@ def main() -> None:
     print()
 
     # Đối chiếu với nguồn ĐỘC LẬP nếu có. Nhiều tổ chức tự lập báo cáo Kiro rồi để trong
-    # cùng bucket (prefix reports/) hoặc gửi qua email — đó là cơ hội kiểm chứng tốt nhất.
+    # cùng bucket (prefix reports/) hoặc gửi qua email - đó là cơ hội kiểm chứng tốt nhất.
     # Truyền qua --crosscheck 'nhãn=nguồn:chỉ_số=giá_trị,chỉ_số=giá_trị'
     cross = None
     if args.crosscheck:
@@ -230,14 +230,14 @@ def main() -> None:
                       f"họ={cv:>12}  ta={mine}")
             allm = all(x["match"] for x in cross["match"].values())
             cross["allMatch"] = allm
-            print(f"  → {'KHỚP TOÀN BỘ' if allm else 'CÓ CHỈ SỐ LỆCH — điều tra trước khi dùng số'}")
+            print(f"  → {'KHỚP TOÀN BỘ' if allm else 'CÓ CHỈ SỐ LỆCH - điều tra trước khi dùng số'}")
         except (ValueError, TypeError) as e:
             print(f"  [!] Không đọc được --crosscheck ({e}). Định dạng: "
                   f"'nhãn=chỉ_số:giá_trị,chỉ_số:giá_trị'")
             cross = None
     else:
         print("  [i] Không có nguồn đối chiếu độc lập (--crosscheck).")
-        print("      Kiểm tra prefix reports/ trong bucket — nhiều tổ chức tự lập báo cáo Kiro")
+        print("      Kiểm tra prefix reports/ trong bucket - nhiều tổ chức tự lập báo cáo Kiro")
         print("      và để ở đó. Đối chiếu được là bằng chứng mạnh nhất cho độ tin cậy.")
     print()
 

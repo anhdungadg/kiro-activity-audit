@@ -1,14 +1,14 @@
-"""MCP server: audit log Kiro Enterprise — CHỈ ĐỌC trên AWS, mọi output đã che secret.
+"""MCP server: audit log Kiro Enterprise - CHỈ ĐỌC trên AWS, mọi output đã che secret.
 
 Tool:
-  audit_check_access   — xác minh profile + khảo sát bucket (biến thể A/B, có reports/ không)
-  audit_sync_start     — job nền: snapshot mới, sync delta (CSV + prompt-logs theo ngày)
-  audit_scan_start     — job nền: metrics.json + phân loại secret (+ mục đích sử dụng nếu có pattern)
-  audit_job_status     — trạng thái job nền
-  audit_cost           — chi phí, người bị chặn, 3 phương án (chạy ngay, ~1 phút)
-  audit_secret_summary — tóm tắt secret theo mức độ (đọc kết quả scan)
-  audit_purpose_summary— người cần trao đổi về mục đích sử dụng (đọc kết quả scan)
-  audit_build_reports  — sinh 2 báo cáo HTML + kiểm tra
+  audit_check_access   - xác minh profile + khảo sát bucket (biến thể A/B, có reports/ không)
+  audit_sync_start     - job nền: snapshot mới, sync delta (CSV + prompt-logs theo ngày)
+  audit_scan_start     - job nền: metrics.json + phân loại secret (+ mục đích sử dụng nếu có pattern)
+  audit_job_status     - trạng thái job nền
+  audit_cost           - chi phí, người bị chặn, 3 phương án (chạy ngay, ~1 phút)
+  audit_secret_summary - tóm tắt secret theo mức độ (đọc kết quả scan)
+  audit_purpose_summary- người cần trao đổi về mục đích sử dụng (đọc kết quả scan)
+  audit_build_reports  - sinh 2 báo cáo HTML + kiểm tra
 
 Lệnh AWS duy nhất được gọi: `aws sts get-caller-identity`, `aws s3 ls`, và (trong sync-snapshot.sh)
 `aws s3 sync|cp` từ bucket XUỐNG máy. Không có lệnh ghi nào lên AWS.
@@ -83,7 +83,7 @@ def _latest_snapshot(wd: Path) -> Path:
             return p
     snaps = sorted((wd / "data").glob("snapshot-*"))
     if not snaps:
-        raise FileNotFoundError(f"Chưa có snapshot trong {wd}/data — chạy audit_sync_start trước")
+        raise FileNotFoundError(f"Chưa có snapshot trong {wd}/data - chạy audit_sync_start trước")
     return snaps[-1]
 
 
@@ -172,7 +172,7 @@ def audit_sync_start(bucket: str, profile: str, workdir: str | None = None, csv_
                      jobs: int = 6, days: int = 30, region: str = "us-east-1") -> dict:
     """Bắt đầu job nền: tạo snapshot mới trong <workdir>/data/ và sync delta từ bucket (chỉ tải xuống).
 
-    csv_only=True chỉ tải CSV chi phí (vài giây). Đầy đủ có thể mất 30–40 phút với ~150k object —
+    csv_only=True chỉ tải CSV chi phí (vài giây). Đầy đủ có thể mất 30–40 phút với ~150k object -
     poll bằng audit_job_status. Lần đầu lấy `days` ngày gần nhất; lần sau chỉ tải từ ngày snapshot trước − 1.
     """
     _check(bucket, profile)
@@ -204,7 +204,7 @@ def audit_scan_start(workdir: str, bucket: str | None = None, work_pattern: str 
     wd = _workdir(workdir)
     snap = _latest_snapshot(wd)
     if not (snap / "prompt-logs").is_dir():
-        return {"skipped": True, "reason": "Snapshot không có prompt-logs/ (biến thể B) — không có gì để quét."}
+        return {"skipped": True, "reason": "Snapshot không có prompt-logs/ (biến thể B) - không có gì để quét."}
     steps = [[PY, str(SCRIPTS / "export_json.py"), "--root", ".", "--out", str(wd / "data" / "metrics.json")]
              + (["--bucket", bucket] if bucket else []),
              [PY, str(SCRIPTS / "triage-secrets.py"), "--root", ".", "--out", str(wd / "data" / "secret-triage.json")]]
@@ -321,8 +321,8 @@ def audit_cost(workdir: str, min_active_days: int = 10, crosscheck: str | None =
                    if k in ("email", "tier", "credits", "messages", "creditPerMessage", "projectedPctOfLimit",
                             "workdaysObserved", "firstDay", "status")} for u in users[:max(1, int(top))]],
         "files": [str(d / f) for f in ("csv-metrics.json", "monthly-metrics.json", "model-metrics.json", "scenarios.json")],
-        "notes": ["Kết luận bằng monthly-rollup/scenarios; analyze-csv là ngoại suy — chỉ tham khảo.",
-                  "Người bị chặn: dữ liệu bị cắt — không hạ gói. Thử đổi model trước khi nâng gói.",
+        "notes": ["Kết luận bằng monthly-rollup/scenarios; analyze-csv là ngoại suy - chỉ tham khảo.",
+                  "Người bị chặn: dữ liệu bị cắt - không hạ gói. Thử đổi model trước khi nâng gói.",
                   "Không đề nghị huỷ license chỉ vì im lặng vài ngày."],
     }
 
@@ -350,13 +350,13 @@ def _severity(h: dict) -> str:
 def audit_secret_summary(workdir: str, min_severity: str = "high", previous_triage: str | None = None) -> dict:
     """Tóm tắt credential bị lộ (từ data/secret-triage.json, đã che) theo mức độ.
 
-    min_severity: critical | high | medium | low | info — mức thấp nhất liệt kê chi tiết.
+    min_severity: critical | high | medium | low | info - mức thấp nhất liệt kê chi tiết.
     previous_triage: secret-triage.json của kỳ trước → đánh dấu giá trị XUẤT HIỆN LẠI (có thể chưa thu hồi).
     """
     wd = _workdir(workdir)
     t = _load(wd / "data" / "secret-triage.json")
     if not t:
-        return {"error": "Chưa có data/secret-triage.json — chạy audit_scan_start"}
+        return {"error": "Chưa có data/secret-triage.json - chạy audit_scan_start"}
     order = ["critical", "high", "medium", "low", "info"]
     lim = order.index(min_severity) if min_severity in order else 1
     prev = set()
@@ -377,24 +377,24 @@ def audit_secret_summary(workdir: str, min_severity: str = "high", previous_tria
         "details": {s: [{k: v for k, v in h.items() if k != "near"} for h in by[s]] for s in order[:lim + 1]},
         "reappearedFromPrevious": [h for s in order for h in by[s] if h.get("reappeared")],
         "rules": ["Không thử dùng khoá. Giả định còn hiệu lực cho tới khi chủ hệ thống thay.",
-                  "Báo cáo chỉ nêu loại, hệ thống, người, thời hạn — không bao giờ nêu giá trị.",
+                  "Báo cáo chỉ nêu loại, hệ thống, người, thời hạn - không bao giờ nêu giá trị.",
                   "Nguyên nhân gốc thường là thiếu hướng dẫn + file đang mở bị IDE tự gửi, không phải cố ý."],
     }
 
 
 @mcp.tool(annotations=RO)
 def audit_purpose_summary(workdir: str) -> dict:
-    """Người cần trao đổi về mục đích sử dụng (từ data/purpose.json). Chỉ là tín hiệu — KHÔNG phải căn cứ xử lý."""
+    """Người cần trao đổi về mục đích sử dụng (từ data/purpose.json). Chỉ là tín hiệu - KHÔNG phải căn cứ xử lý."""
     p = _load(_workdir(workdir) / "data" / "purpose.json")
     if p is None:
-        return {"error": "Chưa có data/purpose.json — chạy audit_scan_start với work_pattern"}
+        return {"error": "Chưa có data/purpose.json - chạy audit_scan_start với work_pattern"}
     flagged = {u: v for u, v in p.items() if v.get("flag")}
     return {"users": len(p), "flagged": flagged,
             "noFileContext": [u for u, v in p.items() if v.get("noFileContext")],
             "limits": ["Không có dấu hiệu công ty ≠ dùng cá nhân (POC, học công cụ, đối tác).",
-                       "Công cụ mới triển khai — thử nghiệm ban đầu là bình thường.",
+                       "Công cụ mới triển khai - thử nghiệm ban đầu là bình thường.",
                        "Người không mở file trong workspace gần như không để lại dấu vết; không có file path ≠ bất thường.",
-                       "Giám sát qua nội dung cần chính sách + thông báo trước — không xử lý hồi tố."]}
+                       "Giám sát qua nội dung cần chính sách + thông báo trước - không xử lý hồi tố."]}
 
 
 @mcp.tool(annotations=LOCAL)

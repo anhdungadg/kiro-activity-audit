@@ -136,7 +136,7 @@ def main() -> None:
 
     # ---------- 1. tổng message + credit theo model (phân bổ tuyến tính) ----------
     print("=" * 96)
-    print("MODEL MIX — tổng message theo model (số đếm trực tiếp từ CSV)")
+    print("MODEL MIX - tổng message theo model (số đếm trực tiếp từ CSV)")
     print("=" * 96)
     tot_by_model = defaultdict(int)
     clients_by_model = defaultdict(set)
@@ -166,7 +166,7 @@ def main() -> None:
         fit_b.append(r["credits"])
 
     print("=" * 96)
-    print("CREDIT/MESSAGE THEO MODEL — hồi quy NNLS trên dòng user-ngày")
+    print("CREDIT/MESSAGE THEO MODEL - hồi quy NNLS trên dòng user-ngày")
     print("=" * 96)
     print(f"  Dùng {len(fit_rows)}/{len(recs)} dòng (bỏ {dropped} dòng có tổng model "
           f"≠ Total_Messages hoặc = 0)")
@@ -205,7 +205,7 @@ def main() -> None:
             per_month[k]["days"].add(r["date"])
 
     print("=" * 96)
-    print("DỮ LIỆU BỊ CHẶN (right-censored) — user hết credit nên bị Kiro khoá")
+    print("DỮ LIỆU BỊ CHẶN (right-censored) - user hết credit nên bị Kiro khoá")
     print("=" * 96)
     censored = []
     for (mo, uid), v in sorted(per_month.items(), key=lambda x: -x[1]["credits"]):
@@ -241,7 +241,7 @@ def main() -> None:
 
     # ---------- 4. đốt credit nhanh nhất theo ngày active ----------
     print("=" * 96)
-    print("TỐC ĐỘ ĐỐT CREDIT — credit/ngày-active (top 15)")
+    print("TỐC ĐỘ ĐỐT CREDIT - credit/ngày-active (top 15)")
     print("=" * 96)
     burn = []
     for (mo, uid), v in per_month.items():

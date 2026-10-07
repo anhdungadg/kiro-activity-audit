@@ -32,7 +32,7 @@ import sys
 from collections import defaultdict
 from datetime import date
 
-# Bảng giá Kiro — xác minh lại tại kiro.dev/pricing trước khi trích dẫn
+# Bảng giá Kiro - xác minh lại tại kiro.dev/pricing trước khi trích dẫn
 TIERS: dict[str, tuple[int, int]] = {   # tên: (USD/tháng, credits/tháng)
     "FREE": (0, 50),
     "PRO": (20, 1_000),
@@ -49,7 +49,7 @@ COST_PREFIX = "user_report"
 REQUIRED_COLS = {"UserId", "Credits_Used", "Subscription_Tier"}
 MODEL_SUFFIX = "_messages"
 
-# Domain công ty — email ngoài domain này được đánh dấu để rà soát.
+# Domain công ty - email ngoài domain này được đánh dấu để rà soát.
 # Truyền qua --corp-domain. Nếu không truyền, script TỰ SUY domain phổ biến nhất trong dữ liệu.
 CORP_DOMAIN_DEFAULT = None
 
@@ -163,7 +163,7 @@ def main() -> None:
 
     # Domain công ty: dùng giá trị truyền vào, hoặc tự suy domain phổ biến nhất.
     # Tự suy an toàn hơn hardcode vì mỗi khách hàng một domain, và một tổ chức có thể
-    # dùng nhiều domain hợp lệ — khi đó phải truyền --corp-domain tường minh.
+    # dùng nhiều domain hợp lệ - khi đó phải truyền --corp-domain tường minh.
     corp = args.corp_domain
     dom_count: dict[str, int] = defaultdict(int)
     for u in users.values():
@@ -207,8 +207,8 @@ def main() -> None:
         tot_m = sum(v["msgs"] for _, v in rows)
 
         print("=" * 108)
-        print(f"THÁNG {mo}  —  {c['daysWithData']}/{c['daysInMonth']} ngày dữ liệu"
-              f"{'' if c['complete'] else '  (CHƯA ĐỦ THÁNG — số dưới đây là SỐ THẬT tới nay, không ngoại suy)'}")
+        print(f"THÁNG {mo}  -  {c['daysWithData']}/{c['daysInMonth']} ngày dữ liệu"
+              f"{'' if c['complete'] else '  (CHƯA ĐỦ THÁNG - số dưới đây là SỐ THẬT tới nay, không ngoại suy)'}")
         print("=" * 108)
         print(f"{'Email':28} {'Tier':9} {'Credits':>9} {'Msgs':>7} {'Cr/msg':>7} "
               f"{'Hạn mức':>8} {'%hạn mức':>9} {'Ngày':>5} {'Trạng thái':>11}")
@@ -262,7 +262,7 @@ def main() -> None:
                   else f"{coverage[basis]['daysWithData']}/{coverage[basis]['daysInMonth']} ngày")
 
     print("=" * 108)
-    print(f"RIGHT-SIZE TIER — căn cứ tháng {basis} ({basis_note}), dùng SỐ THẬT không ngoại suy")
+    print(f"RIGHT-SIZE TIER - căn cứ tháng {basis} ({basis_note}), dùng SỐ THẬT không ngoại suy")
     print("=" * 108)
 
     basis_by_uid = {r["userId"]: r for r in out_months[basis]["users"]}
@@ -319,7 +319,7 @@ def main() -> None:
     noncorp = [u for u in users.values()
                if u["email"] and not u["email"].endswith(corp)]
     if noncorp:
-        print(f"=== ⚠️  EMAIL NGOÀI DOMAIN CÔNG TY ({corp}) — cần rà soát ===")
+        print(f"=== ⚠️  EMAIL NGOÀI DOMAIN CÔNG TY ({corp}) - cần rà soát ===")
         if not args.corp_domain:
             print(f"    (domain tự suy từ dữ liệu: {dom_count.get(corp,0)}/{len(users)} user. "
                   f"Nếu tổ chức dùng nhiều domain hợp lệ, truyền --corp-domain tường minh.)")

@@ -1,20 +1,20 @@
 # kiro-activity-audit
 
-Audit log hoạt động **Kiro Enterprise** cho bất kỳ AWS account nào — **chỉ đọc**, mọi secret **tự che**.
+Audit log hoạt động **Kiro Enterprise** cho bất kỳ AWS account nào - **chỉ đọc**, mọi secret **tự che**.
 
 - Chi phí từng người từ CSV chính thức, **người đã bị chặn** vì hết credit, hệ số credit theo model
 - 3 phương án giảm chi phí: thu hồi seat · hạ gói an toàn · đổi model
-- Phân loại credential bị lộ trong prompt-logs (mật khẩu DB, AWS key, token…) theo mức độ — **không bao giờ in giá trị**
+- Phân loại credential bị lộ trong prompt-logs (mật khẩu DB, AWS key, token…) theo mức độ - **không bao giờ in giá trị**
 - Đánh giá mục đích sử dụng (tín hiệu để trao đổi, không phải căn cứ xử lý)
 - Báo cáo kỹ thuật + bản trình phê duyệt (HTML, in PDF được)
 
-Một repo, hai cách dùng — cùng một bộ script:
+Một repo, hai cách dùng - cùng một bộ script:
 
 | | **Skill** | **Power** (+ MCP server) |
 |---|---|---|
 | Dùng trong | Kiro CLI và Kiro IDE | Kiro IDE (cài qua Powers panel); dùng được trong CLI sau khi cài |
 | Agent làm việc qua | lệnh shell chạy script | 9 tool MCP có kiểu rõ ràng |
-| Che secret | script tự che; phụ thuộc agent tuân thủ quy tắc | **server che mọi output** — model không thấy giá trị thật |
+| Che secret | script tự che; phụ thuộc agent tuân thủ quy tắc | **server che mọi output** - model không thấy giá trị thật |
 | Việc chạy lâu | agent tự chạy nền | job nền + `audit_job_status` |
 | Cài | copy 1 thư mục | Powers panel → Add Custom Power |
 
@@ -102,9 +102,9 @@ rm -rf /tmp/kiro-e2e      # chứa log thật, có thể có credential
 ```
 
 **Phát hành:** tăng `version` trong `pyproject.toml` và `src/kiro_audit/__init__.py`, tag `vX.Y.Z`.
-`uvx` cache theo version — không tăng version thì người dùng có thể chạy bản cũ.
+`uvx` cache theo version - không tăng version thì người dùng có thể chạy bản cũ.
 
-**Trước khi commit:** `tests/test_repo.py` bước 4 phải đạt — repo **không được** chứa tên, email,
+**Trước khi commit:** `tests/test_repo.py` bước 4 phải đạt - repo **không được** chứa tên, email,
 account, hay hệ thống của bất kỳ tổ chức nào đã audit.
 
 ## An toàn
@@ -113,4 +113,4 @@ account, hay hệ thống của bất kỳ tổ chức nào đã audit.
 - Tham số `bucket`/`profile`/`region`/`job_id` được kiểm tra bằng regex; không có lệnh nào chạy qua shell.
 - Thư mục làm việc (`kiro-audit-<account>/data/snapshot-*`) chứa source code, prompt nguyên văn và
   **credential thật**. `data/.gitignore` được tạo tự động. Không commit, không chia sẻ, xoá khi xong.
-- Báo cáo chứa email nhân viên và đánh giá cá nhân — lưu hành hạn chế.
+- Báo cáo chứa email nhân viên và đánh giá cá nhân - lưu hành hạn chế.

@@ -33,7 +33,7 @@ import os
 import sys
 from collections import defaultdict
 
-# Bảng giá Kiro — kiểm tra lại tại kiro.dev/pricing nếu đã lâu
+# Bảng giá Kiro - kiểm tra lại tại kiro.dev/pricing nếu đã lâu
 TIERS: dict[str, tuple[int, int]] = {   # tên: (USD/tháng, credits/tháng)
     "FREE": (0, 50),
     "PRO": (20, 1_000),
@@ -44,7 +44,7 @@ TIERS: dict[str, tuple[int, int]] = {   # tên: (USD/tháng, credits/tháng)
 OVERAGE_USD_PER_CREDIT = 0.04
 AT_RISK_PCT = 75          # ngưỡng at-risk theo AWS Cloud Intelligence Dashboards
 
-# Múi giờ hiển thị — đổi bằng KIRO_AUDIT_TZ (số giờ lệch UTC), mặc định 7 (Việt Nam)
+# Múi giờ hiển thị - đổi bằng KIRO_AUDIT_TZ (số giờ lệch UTC), mặc định 7 (Việt Nam)
 TZ_OFFSET = float(os.environ.get("KIRO_AUDIT_TZ", "7"))
 TZ_LABEL = f"GMT{'+' if TZ_OFFSET >= 0 else '-'}{abs(TZ_OFFSET):g}"
 HEADROOM = 0.90           # chỉ đề xuất tier nếu dùng <= 90% hạn mức tier đó
@@ -53,7 +53,7 @@ MODEL_COLS_SUFFIX = "_messages"
 
 
 # Chỉ prefix user_report/ chứa dữ liệu chi phí. Kiro còn ghi các loại CSV khác
-# (ví dụ by_user_analytic/ — số dòng code AI sinh, tỷ lệ chấp nhận) với SCHEMA KHÁC HẲN:
+# (ví dụ by_user_analytic/ - số dòng code AI sinh, tỷ lệ chấp nhận) với SCHEMA KHÁC HẲN:
 # không có Credits_Used / Subscription_Tier / User_Email, và Date theo dạng MM-DD-YYYY
 # thay vì YYYY-MM-DD. Gộp chúng vào sẽ sinh "ngày ảo" và làm sai số liệu.
 COST_PREFIX = "user_report"
@@ -82,9 +82,9 @@ def find_csvs(root: str) -> tuple[list[str], list[str]]:
 def workdays_between(d0: str, d1: str) -> int:
     """Số ngày Thứ 2–Thứ 6 trong khoảng [d0, d1] (chuỗi YYYY-MM-DD, bao gồm cả hai đầu).
 
-    LÝ DO TỒN TẠI: bản trước chia credit cho SỐ NGÀY LỊCH rồi nhân SỐ NGÀY LÀM VIỆC —
+    LÝ DO TỒN TẠI: bản trước chia credit cho SỐ NGÀY LỊCH rồi nhân SỐ NGÀY LÀM VIỆC -
     trộn hai đơn vị nên hạ thấp kết quả. Đo thực tế trên account này: ngày làm việc
-    ~1.827 credit/ngày, cuối tuần ~31 — chênh 58 lần. Gộp cuối tuần vào mẫu làm
+    ~1.827 credit/ngày, cuối tuần ~31 - chênh 58 lần. Gộp cuối tuần vào mẫu làm
     loãng tỷ lệ và khiến ngoại suy thấp hơn thực tế tới ~29%.
     """
     a = date.fromisoformat(d0)
@@ -232,7 +232,7 @@ def main() -> None:
         limit = u["limit"] or TIERS.get(u["tier"], (0, 0))[1]
         pct_used = cred / limit * 100 if limit else 0.0
         # Ngoại suy theo NGÀY LÀM VIỆC, không phải ngày lịch.
-        # Mốc tính: từ ngày user xuất hiện lần đầu đến ngày cuối của bộ dữ liệu —
+        # Mốc tính: từ ngày user xuất hiện lần đầu đến ngày cuối của bộ dữ liệu -
         # để user mới được cấp license giữa kỳ không bị hạ thấp tỷ lệ.
         first_day = min(u["days"]) if u["days"] else (days[0] if days else "")
         obs_wd = workdays_between(first_day, days[-1]) if days and first_day else 0
@@ -349,7 +349,7 @@ def main() -> None:
 
     # ---------- theo ngày ----------
     if args.by_day or ndays > 1:
-        print("=== Theo ngày (lịch UTC — xem lưu ý múi giờ ở trên) ===")
+        print("=== Theo ngày (lịch UTC - xem lưu ý múi giờ ở trên) ===")
         print(f"{'Ngày UTC':12} {'Tương ứng ' + TZ_LABEL:>26} {'Credits':>10} {'Msgs':>7} {'User':>6}")
         from datetime import datetime as _dt, timedelta as _td
         for d in days:
